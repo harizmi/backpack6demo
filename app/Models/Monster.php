@@ -21,10 +21,14 @@ class Monster extends Model
     */
 
     protected $table = 'monsters';
+
     protected $primaryKey = 'id';
+
     public $timestamps = true;
+
     // protected $guarded = ['id'];
     protected $fillable = ['address_algolia', 'base64_image', 'browse', 'browse_multiple', 'checkbox', 'wysiwyg', 'color', 'color_picker', 'date', 'date_picker', 'easymde', 'start_date', 'end_date', 'datetime', 'datetime_picker', 'email', 'hidden', 'icon_picker', 'image', 'month', 'number', 'float', 'password', 'radio', 'range', 'select', 'select_from_array', 'select2', 'select2_from_ajax', 'select2_from_array', 'summernote', 'table', 'textarea', 'text', 'tinymce', 'upload', 'upload_multiple', 'url', 'video', 'week', 'extras', 'icon_id', 'editable_checkbox', 'fake-text', 'fake-switch', 'fake-checkbox', 'fake-select'];
+
     // protected $hidden = [];
     // protected $dates = [];
     protected $casts = [
@@ -275,7 +279,9 @@ class Monster extends Model
             \Storage::disk($disk)->put($destination_path.'/'.$filename, $image->stream());
 
             // 3. Delete the previous image, if there was one.
-            \Storage::disk($disk)->delete($this->{$attribute_name});
+            if ($this->{$attribute_name}) {
+                \Storage::disk($disk)->delete($this->{$attribute_name});
+            }
 
             // 4. Save the public path to the database
             // but first, remove "public/" from the path, since we're pointing to it from the root folder
