@@ -18,8 +18,10 @@ class PetCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\FetchOperation;
-    use \Backpack\Pro\Http\Controllers\Operations\TrashOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
+    use \Backpack\Pro\Http\Controllers\Operations\BulkDeleteOperation;
     use \Backpack\Pro\Http\Controllers\Operations\BulkTrashOperation;
+    use \Backpack\Pro\Http\Controllers\Operations\TrashOperation;
 
     public function fetchComments()
     {
