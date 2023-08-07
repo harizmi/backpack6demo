@@ -56,7 +56,10 @@ class SkillCrudController extends CrudController
         CRUD::setValidation(SkillRequest::class);
 
         CRUD::field('name');
-        CRUD::field('pets');
+        
+        CRUD::field('pets')->subfields([
+            ['name' => 'picture', 'type' => 'upload', 'withFiles' => ['path' => 'petfiles']]
+        ]);
     }
 
     /**
@@ -67,6 +70,11 @@ class SkillCrudController extends CrudController
      * @return void
      */
     protected function setupUpdateOperation()
+    {
+        $this->setupCreateOperation();
+    }
+
+    protected function setupDeleteOperation()
     {
         $this->setupCreateOperation();
     }

@@ -28,8 +28,10 @@ class Skill extends Model
         'id' => 'integer',
     ];
 
+    protected $with = ['pets'];
+
     public function pets()
     {
-        return $this->belongsToMany(\App\Models\PetShop\Pet::class);
+        return $this->belongsToMany(\App\Models\PetShop\Pet::class)->withPivot(['picture', 'id'])->using(PetSkill::class);
     }
 }

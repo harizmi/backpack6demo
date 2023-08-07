@@ -14,8 +14,10 @@ class CreatePetSkillTable extends Migration
     public function up()
     {
         Schema::create('pet_skill', function (Blueprint $table) {
+            $table->increments('id');
             $table->foreignId('pet_id');
             $table->foreignId('skill_id');
+            $table->text('picture')->nullable();
         });
     }
 
