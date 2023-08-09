@@ -90,6 +90,11 @@ class InvoiceCrudController extends CrudController
                     'class' => 'form-group col-md-2',
                 ],
             ],
+            [
+                'name'       => 'doc',
+                'type'       => 'upload',
+                'withFiles' => ['path' => 'invoicedocs'],
+            ],
         ])->reorder('order')->hint('<small class="float-right">Create/update/delete InvoiceItem entries over a <code>hasMany</code> relationship (1-n).</small>');
     }
 

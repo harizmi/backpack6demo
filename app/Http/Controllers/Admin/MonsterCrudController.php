@@ -26,6 +26,10 @@ class MonsterCrudController extends CrudController
         $this->crud->set('show.setFromDb', false);
     }
 
+    protected function setupDeleteOperation() {
+        $this->setupCreateOperation();
+    }
+
     public function fetchProduct()
     {
         return $this->fetch(\App\Models\Product::class);
@@ -1068,9 +1072,8 @@ class MonsterCrudController extends CrudController
             [
                 'name'    => 'address.street',
                 'label'   => 'HasOne (1-1) <small>towards an attribute on related model</small>',
-                'wrapper' => [
-                    'class' => 'form-group col-md-6',
-                ],
+                'type' => 'upload',
+                'withFiles' => ['path' => 'hasonedot'],
                 'tab'   => 'Relationship',
             ],
             [
@@ -1141,7 +1144,8 @@ class MonsterCrudController extends CrudController
                 'subfields' => [
                     [
                         'name' => 'postal_name',
-                        'type' => 'text',
+                        'type' => 'upload',
+                        'withFiles' => true,
                     ],
                 ],
                 'wrapper' => [
@@ -1163,7 +1167,8 @@ class MonsterCrudController extends CrudController
                 'subfields' => [
                     [
                         'name'    => 'notes',
-                        'type'    => 'text',
+                        'type' => 'upload',
+                        'withFiles' => ['path' => 'belongstomany'],
                         'wrapper' => [
                             'class' => 'form-group col-md-6',
                         ],
@@ -1236,6 +1241,8 @@ class MonsterCrudController extends CrudController
                 'subfields' => [
                     [
                         'name'    => 'name',
+                        'type' => 'upload',
+                        'withFiles' => ['path' => 'monsterhasOne'],
                         'wrapper' => [
                             'class' => 'form-group col-md-6',
                         ],
@@ -1261,7 +1268,8 @@ class MonsterCrudController extends CrudController
                 'subfields' => [
                     [
                         'name' => 'title',
-                        'type' => 'text',
+                        'type' => 'upload',
+                        'withFiles' => ['path' => 'monsterstars']
                     ],
                 ],
 
@@ -1276,7 +1284,8 @@ class MonsterCrudController extends CrudController
                 'subfields' => [
                     [
                         'name' => 'text',
-                        'type' => 'text',
+                        'type' => 'upload',
+                        'withFiles' => ['path' => 'monsterrecommends']
                     ],
                 ],
                 'tab'   => 'Relationship',
@@ -1610,7 +1619,7 @@ class MonsterCrudController extends CrudController
             'name'         => 'dropzone',
             'type'         => 'dropzone',
             'tab'          => 'Uploads',
-            'withFiles'    => true,
+            //'withFiles'    => true,
         ];
 
         return $fields;

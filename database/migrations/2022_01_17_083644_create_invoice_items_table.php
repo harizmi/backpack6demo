@@ -22,6 +22,7 @@ class CreateInvoiceItemsTable extends Migration
             $table->text('description');
             $table->float('quantity');
             $table->float('unit_price');
+            $table->text('doc')->nullable();
             $table->timestamps();
         });
 

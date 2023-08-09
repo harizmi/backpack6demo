@@ -174,7 +174,7 @@ class Monster extends Model
 
     public function recommends()
     {
-        return $this->morphToMany(\App\Models\Recommend::class, 'recommendable')->withPivot('text');
+        return $this->morphToMany(\App\Models\Recommend::class, 'recommendable')->withPivot('text')->using(MonsterRecommend::class);
     }
 
     public function bills()
