@@ -56,9 +56,9 @@ class SkillCrudController extends CrudController
         CRUD::setValidation(SkillRequest::class);
 
         CRUD::field('name');
-        
+
         CRUD::field('pets')->subfields([
-            ['name' => 'picture', 'type' => 'upload', 'withFiles' => ['path' => 'petfiles']]
+            ['name' => 'picture', 'type' => 'upload', 'withFiles' => ['path' => 'petfiles']],
         ]);
     }
 
