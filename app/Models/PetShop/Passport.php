@@ -2,7 +2,6 @@
 
 namespace App\Models\PetShop;
 
-use App\Models\PetShop\Pet;
 use Backpack\ActivityLog\Traits\LogsActivity;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -42,11 +41,11 @@ class Passport extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'integer',
-        'pet_id' => 'integer',
+        'id'            => 'integer',
+        'pet_id'        => 'integer',
         'issuance_date' => 'date',
-        'expiry_date' => 'date',
-        'birth_date' => 'date',
+        'expiry_date'   => 'date',
+        'birth_date'    => 'date',
     ];
 
     public function pet(): BelongsTo

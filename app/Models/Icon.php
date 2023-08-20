@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Recommend;
 use Backpack\ActivityLog\Traits\LogsActivity;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;

@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Country;
-use App\Models\Monster;
 use Backpack\ActivityLog\Traits\LogsActivity;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;

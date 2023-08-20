@@ -2,9 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Country;
-use App\Models\Monster;
-use App\Models\Universe;
 use Backpack\ActivityLog\Traits\LogsActivity;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;

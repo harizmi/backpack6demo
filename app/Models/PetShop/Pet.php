@@ -2,12 +2,6 @@
 
 namespace App\Models\PetShop;
 
-use App\Models\PetShop\Avatar;
-use App\Models\PetShop\Badge;
-use App\Models\PetShop\Comment;
-use App\Models\PetShop\Owner;
-use App\Models\PetShop\Passport;
-use App\Models\PetShop\Skill;
 use Backpack\ActivityLog\Traits\LogsActivity;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;

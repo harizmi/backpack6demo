@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Hero;
-use App\Models\Monster;
 use Backpack\ActivityLog\Traits\LogsActivity;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -47,7 +45,7 @@ class Story extends Model
                 // fields that are on fillable but are not part of model table
                 $columnsToRemove = ['fake-text', 'fake-switch', 'fake-select', 'fake-checkbox', 'editable_checkbox'];
 
-                return ! in_array($item, $columnsToRemove);
+                return !in_array($item, $columnsToRemove);
             }));
     }
 }

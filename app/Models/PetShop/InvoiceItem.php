@@ -2,7 +2,6 @@
 
 namespace App\Models\PetShop;
 
-use App\Models\PetShop\Invoice;
 use Backpack\ActivityLog\Traits\LogsActivity;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -24,9 +23,9 @@ class InvoiceItem extends Model
     ];
 
     protected $casts = [
-        'id' => 'integer',
+        'id'         => 'integer',
         'invoice_id' => 'integer',
-        'quantity' => 'float',
+        'quantity'   => 'float',
         'unit_price' => 'float',
     ];
 

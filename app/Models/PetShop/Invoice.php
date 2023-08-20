@@ -2,8 +2,6 @@
 
 namespace App\Models\PetShop;
 
-use App\Models\PetShop\InvoiceItem;
-use App\Models\PetShop\Owner;
 use Backpack\ActivityLog\Traits\LogsActivity;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -28,10 +26,10 @@ class Invoice extends Model
     ];
 
     protected $casts = [
-        'id' => 'integer',
-        'owner_id' => 'integer',
+        'id'            => 'integer',
+        'owner_id'      => 'integer',
         'issuance_date' => 'date',
-        'due_date' => 'date',
+        'due_date'      => 'date',
     ];
 
     protected $appends = [

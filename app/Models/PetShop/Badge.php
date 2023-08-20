@@ -2,8 +2,6 @@
 
 namespace App\Models\PetShop;
 
-use App\Models\PetShop\Owner;
-use App\Models\PetShop\Pet;
 use Backpack\ActivityLog\Traits\LogsActivity;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;

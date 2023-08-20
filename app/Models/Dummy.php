@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Icon;
-use App\Models\Product;
 use Backpack\ActivityLog\Traits\LogsActivity;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Backpack\NewsCRUD\app\Models\Article;

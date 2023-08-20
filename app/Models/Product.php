@@ -49,10 +49,10 @@ class Product extends Model implements HasMedia
     ];
 
     public $casts = [
-        'features' => 'object',
+        'features'       => 'object',
         'extra_features' => 'object',
-        'status' => ProductStatus::class,
-        'gallery' => 'json',
+        'status'         => ProductStatus::class,
+        'gallery'        => 'json',
         'specifications' => 'array',
     ];
 
