@@ -2,58 +2,25 @@
 
 namespace App\Models;
 
+use Backpack\ActivityLog\Traits\LogsActivity;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class Star extends Model
 {
     use CrudTrait;
-    use \Backpack\ActivityLog\Traits\LogsActivity;
-
-    /*
-    |--------------------------------------------------------------------------
-    | GLOBAL VARIABLES
-    |--------------------------------------------------------------------------
-    */
+    use LogsActivity;
 
     protected $table = 'stars';
-    protected $primaryKey = 'id';
     public $timestamps = false;
-    protected $fillable = ['title'];
-    // protected $hidden = [];
 
-    /*
-    |--------------------------------------------------------------------------
-    | FUNCTIONS
-    |--------------------------------------------------------------------------
-    */
+    protected $fillable = [
+        'title',
+    ];
 
-    /*
-    |--------------------------------------------------------------------------
-    | RELATIONS
-    |--------------------------------------------------------------------------
-    */
-
-    public function starable()
+    public function starable(): MorphTo
     {
         return $this->morphTo();
     }
-
-    /*
-    |--------------------------------------------------------------------------
-    | SCOPES
-    |--------------------------------------------------------------------------
-    */
-
-    /*
-    |--------------------------------------------------------------------------
-    | ACCESORS
-    |--------------------------------------------------------------------------
-    */
-
-    /*
-    |--------------------------------------------------------------------------
-    | MUTATORS
-    |--------------------------------------------------------------------------
-    */
 }

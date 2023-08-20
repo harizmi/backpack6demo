@@ -2,58 +2,27 @@
 
 namespace App\Models;
 
+use App\Models\Address;
+use Backpack\ActivityLog\Traits\LogsActivity;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Country extends Model
 {
     use CrudTrait;
-    use \Backpack\ActivityLog\Traits\LogsActivity;
-
-    /*
-    |--------------------------------------------------------------------------
-    | GLOBAL VARIABLES
-    |--------------------------------------------------------------------------
-    */
+    use LogsActivity;
 
     protected $table = 'countries';
-    protected $primaryKey = 'id';
     public $timestamps = false;
-    protected $fillable = ['name', 'code'];
-    // protected $hidden = [];
 
-    /*
-    |--------------------------------------------------------------------------
-    | FUNCTIONS
-    |--------------------------------------------------------------------------
-    */
+    protected $fillable = [
+        'name',
+        'code',
+    ];
 
-    /*
-    |--------------------------------------------------------------------------
-    | RELATIONS
-    |--------------------------------------------------------------------------
-    */
-
-    public function addresses()
+    public function addresses(): HasMany
     {
-        return $this->hasMany(\App\Models\Address::class);
+        return $this->hasMany(Address::class);
     }
-
-    /*
-    |--------------------------------------------------------------------------
-    | SCOPES
-    |--------------------------------------------------------------------------
-    */
-
-    /*
-    |--------------------------------------------------------------------------
-    | ACCESORS
-    |--------------------------------------------------------------------------
-    */
-
-    /*
-    |--------------------------------------------------------------------------
-    | MUTATORS
-    |--------------------------------------------------------------------------
-    */
 }

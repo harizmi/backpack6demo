@@ -2,13 +2,25 @@
 
 namespace App\Models\PetShop;
 
+use App\Models\PetShop\Avatar;
+use App\Models\PetShop\Badge;
+use App\Models\PetShop\Comment;
+use App\Models\PetShop\Invoice;
+use App\Models\PetShop\Pet;
+use Backpack\ActivityLog\Traits\LogsActivity;
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class Owner extends Model
 {
-    use \Backpack\CRUD\app\Models\Traits\CrudTrait;
-    use \Backpack\ActivityLog\Traits\LogsActivity;
+    use CrudTrait;
+    use LogsActivity;
     use HasFactory;
 
     /**
@@ -29,28 +41,28 @@ class Owner extends Model
         'id' => 'integer',
     ];
 
-    public function invoices()
+    public function invoices(): HasMany
     {
-        return $this->hasMany(\App\Models\PetShop\Invoice::class);
+        return $this->hasMany(Invoice::class);
     }
 
-    public function pets()
+    public function pets(): BelongsToMany
     {
-        return $this->belongsToMany(\App\Models\PetShop\Pet::class)->withPivot('role');
+        return $this->belongsToMany(Pet::class)->withPivot('role');
     }
 
-    public function avatar()
+    public function avatar(): MorphOne
     {
-        return $this->morphOne(\App\Models\PetShop\Avatar::class, 'avatarable');
+        return $this->morphOne(Avatar::class, 'avatarable');
     }
 
-    public function comments()
+    public function comments(): MorphMany
     {
-        return $this->morphMany(\App\Models\PetShop\Comment::class, 'commentable', null, null, 'user_id');
+        return $this->morphMany(Comment::class, 'commentable', null, null, 'user_id');
     }
 
-    public function badges()
+    public function badges(): MorphToMany
     {
-        return $this->morphToMany(\App\Models\PetShop\Badge::class, 'badgeable')->withPivot('note');
+        return $this->morphToMany(Badge::class, 'badgeable')->withPivot('note');
     }
 }

@@ -2,14 +2,20 @@
 
 namespace App\Models\PetShop;
 
+use App\Models\PetShop\InvoiceItem;
+use App\Models\PetShop\Owner;
+use Backpack\ActivityLog\Traits\LogsActivity;
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Invoice extends Model
 {
-    use \Backpack\CRUD\app\Models\Traits\CrudTrait;
-    use \Backpack\ActivityLog\Traits\LogsActivity;
+    use CrudTrait;
+    use LogsActivity;
     use HasFactory;
     use SoftDeletes;
 
@@ -22,58 +28,28 @@ class Invoice extends Model
     ];
 
     protected $casts = [
-        'id'            => 'integer',
-        'owner_id'      => 'integer',
+        'id' => 'integer',
+        'owner_id' => 'integer',
         'issuance_date' => 'date',
-        'due_date'      => 'date',
+        'due_date' => 'date',
     ];
 
     protected $appends = [
         'total',
     ];
 
-    /*
-    |--------------------------------------------------------------------------
-    | FUNCTIONS
-    |--------------------------------------------------------------------------
-    */
-
-    /*
-    |--------------------------------------------------------------------------
-    | RELATIONS
-    |--------------------------------------------------------------------------
-    */
-
-    public function owner()
+    public function owner(): BelongsTo
     {
-        return $this->belongsTo(\App\Models\PetShop\Owner::class, 'owner_id');
+        return $this->belongsTo(Owner::class, 'owner_id');
     }
 
-    public function items()
+    public function items(): HasMany
     {
-        return $this->hasMany(\App\Models\PetShop\InvoiceItem::class);
+        return $this->hasMany(InvoiceItem::class);
     }
-
-    /*
-    |--------------------------------------------------------------------------
-    | SCOPES
-    |--------------------------------------------------------------------------
-    */
-
-    /*
-    |--------------------------------------------------------------------------
-    | ACCESORS
-    |--------------------------------------------------------------------------
-    */
 
     public function getTotalAttribute()
     {
         return $this->items->sum('subtotal');
     }
-
-    /*
-    |--------------------------------------------------------------------------
-    | MUTATORS
-    |--------------------------------------------------------------------------
-    */
 }

@@ -2,14 +2,23 @@
 
 namespace App\Models;
 
+use App\Models\Country;
+use App\Models\Monster;
+use App\Models\Universe;
+use Backpack\ActivityLog\Traits\LogsActivity;
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Wish extends Model
 {
-    use \Backpack\CRUD\app\Models\Traits\CrudTrait;
-    use \Backpack\ActivityLog\Traits\LogsActivity;
+    use CrudTrait;
+    use LogsActivity;
     use HasFactory;
+
+    protected $table = 'wishes';
 
     protected $fillable = [
         'body',
@@ -21,59 +30,18 @@ class Wish extends Model
         'id' => 'integer',
     ];
 
-    /*
-    |--------------------------------------------------------------------------
-    | GLOBAL VARIABLES
-    |--------------------------------------------------------------------------
-    */
-
-    protected $table = 'wishes';
-    protected $primaryKey = 'id';
-    public $timestamps = true;
-    protected $guarded = ['id'];
-    // protected $hidden = [];
-
-    /*
-    |--------------------------------------------------------------------------
-    | FUNCTIONS
-    |--------------------------------------------------------------------------
-    */
-
-    /*
-    |--------------------------------------------------------------------------
-    | RELATIONS
-    |--------------------------------------------------------------------------
-    */
-
-    public function monster()
+    public function monster(): BelongsTo
     {
-        return $this->belongsTo(\App\Models\Monster::class);
+        return $this->belongsTo(Monster::class);
     }
 
-    public function country()
+    public function country(): BelongsTo
     {
-        return $this->belongsTo(\App\Models\Country::class);
+        return $this->belongsTo(Country::class);
     }
 
-    public function universes()
+    public function universes(): BelongsToMany
     {
-        return $this->belongsToMany(\App\Models\Universe::class, 'universes_wishes');
+        return $this->belongsToMany(Universe::class, 'universes_wishes');
     }
-    /*
-    |--------------------------------------------------------------------------
-    | SCOPES
-    |--------------------------------------------------------------------------
-    */
-
-    /*
-    |--------------------------------------------------------------------------
-    | ACCESORS
-    |--------------------------------------------------------------------------
-    */
-
-    /*
-    |--------------------------------------------------------------------------
-    | MUTATORS
-    |--------------------------------------------------------------------------
-    */
 }

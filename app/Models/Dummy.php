@@ -2,94 +2,63 @@
 
 namespace App\Models;
 
+use App\Models\Icon;
+use App\Models\Product;
+use Backpack\ActivityLog\Traits\LogsActivity;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
+use Backpack\NewsCRUD\app\Models\Article;
+use Backpack\NewsCRUD\app\Models\Category;
+use Backpack\NewsCRUD\app\Models\Tag;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Spatie\Permission\Traits\HasRoles;
 
 class Dummy extends Model
 {
     use CrudTrait;
-    use \Backpack\ActivityLog\Traits\LogsActivity;
+    use LogsActivity;
     use HasRoles;
 
-    /*
-    |--------------------------------------------------------------------------
-    | GLOBAL VARIABLES
-    |--------------------------------------------------------------------------
-    */
-
     protected $table = 'dummies';
-    // protected $primaryKey = 'id';
-    // public $timestamps = false;
     protected $guarded = ['id'];
-    // protected $fillable = [];
-    // protected $hidden = [];
+
     protected $casts = [
         'extras' => 'array',
     ];
 
-    /*
-    |--------------------------------------------------------------------------
-    | FUNCTIONS
-    |--------------------------------------------------------------------------
-    */
-
-    /*
-    |--------------------------------------------------------------------------
-    | RELATIONS
-    |--------------------------------------------------------------------------
-    */
-
-    public function article()
+    public function article(): BelongsTo
     {
-        return $this->belongsTo(\Backpack\NewsCRUD\app\Models\Article::class, 'select2_from_ajax');
+        return $this->belongsTo(Article::class, 'select2_from_ajax');
     }
 
-    public function category()
+    public function category(): BelongsTo
     {
-        return $this->belongsTo(\Backpack\NewsCRUD\app\Models\Category::class, 'select');
+        return $this->belongsTo(Category::class, 'select');
     }
 
-    public function categories()
+    public function categories(): BelongsToMany
     {
-        return $this->belongsToMany(\Backpack\NewsCRUD\app\Models\Category::class, 'monster_category', 'monster_id', 'category_id');
+        return $this->belongsToMany(Category::class, 'monster_category', 'monster_id', 'category_id');
     }
 
-    public function tags()
+    public function tags(): BelongsToMany
     {
-        return $this->belongsToMany(\Backpack\NewsCRUD\app\Models\Tag::class, 'monster_tag', 'monster_id', 'category_id');
+        return $this->belongsToMany(Tag::class, 'monster_tag', 'monster_id', 'category_id');
     }
 
-    public function icon()
+    public function icon(): BelongsTo
     {
-        return $this->belongsTo(\App\Models\Icon::class, 'icon_id');
+        return $this->belongsTo(Icon::class, 'icon_id');
     }
 
-    public function products()
+    public function products(): BelongsToMany
     {
-        return $this->belongsToMany(\App\Models\Product::class, 'monster_product', 'monster_id', 'product_id');
+        return $this->belongsToMany(Product::class, 'monster_product', 'monster_id', 'product_id');
     }
 
-    public function articles()
+    public function articles(): BelongsToMany
     {
-        return $this->belongsToMany(\Backpack\NewsCRUD\app\Models\Article::class, 'monster_article', 'monster_id', 'article_id');
+        return $this->belongsToMany(Article::class, 'monster_article', 'monster_id', 'article_id');
     }
-
-    /*
-    |--------------------------------------------------------------------------
-    | SCOPES
-    |--------------------------------------------------------------------------
-    */
-
-    /*
-    |--------------------------------------------------------------------------
-    | ACCESSORS
-    |--------------------------------------------------------------------------
-    */
-
-    /*
-    |--------------------------------------------------------------------------
-    | MUTATORS
-    |--------------------------------------------------------------------------
-    */
 }

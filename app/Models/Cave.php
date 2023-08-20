@@ -2,13 +2,18 @@
 
 namespace App\Models;
 
+use App\Models\Monster;
+use Backpack\ActivityLog\Traits\LogsActivity;
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Cave extends Model
 {
-    use \Backpack\CRUD\app\Models\Traits\CrudTrait;
-    use \Backpack\ActivityLog\Traits\LogsActivity;
+    use CrudTrait;
+    use LogsActivity;
     use HasFactory;
 
     /**
@@ -29,18 +34,18 @@ class Cave extends Model
         'id' => 'integer',
     ];
 
-    public function monster()
+    public function monster(): HasOne
     {
-        return $this->hasOne(\App\Models\Monster::class);
+        return $this->hasOne(Monster::class);
     }
 
-    protected function location(): \Illuminate\Database\Eloquent\Casts\Attribute
+    protected function location(): Attribute
     {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(
+        return Attribute::make(
             get: function ($value, $attributes) {
                 return json_encode([
-                    'lat'               => $attributes['lat'],
-                    'lng'               => $attributes['lng'],
+                    'lat' => $attributes['lat'],
+                    'lng' => $attributes['lng'],
                     'formatted_address' => $attributes['full_address'] ?? '',
                 ], JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT | JSON_THROW_ON_ERROR);
             },
@@ -48,8 +53,8 @@ class Cave extends Model
                 $location = json_decode($value);
 
                 return [
-                    'lat'          => $location->lat,
-                    'lng'          => $location->lng,
+                    'lat' => $location->lat,
+                    'lng' => $location->lng,
                     'full_address' => $location->formatted_address ?? '',
                 ];
             }

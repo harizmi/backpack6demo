@@ -2,13 +2,17 @@
 
 namespace App\Models\PetShop;
 
+use App\Models\PetShop\Invoice;
+use Backpack\ActivityLog\Traits\LogsActivity;
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class InvoiceItem extends Model
 {
-    use \Backpack\CRUD\app\Models\Traits\CrudTrait;
-    use \Backpack\ActivityLog\Traits\LogsActivity;
+    use CrudTrait;
+    use LogsActivity;
     use HasFactory;
 
     protected $fillable = [
@@ -20,9 +24,9 @@ class InvoiceItem extends Model
     ];
 
     protected $casts = [
-        'id'         => 'integer',
+        'id' => 'integer',
         'invoice_id' => 'integer',
-        'quantity'   => 'float',
+        'quantity' => 'float',
         'unit_price' => 'float',
     ];
 
@@ -30,43 +34,13 @@ class InvoiceItem extends Model
         'subtotal',
     ];
 
-    /*
-    |--------------------------------------------------------------------------
-    | FUNCTIONS
-    |--------------------------------------------------------------------------
-    */
-
-    /*
-    |--------------------------------------------------------------------------
-    | RELATIONS
-    |--------------------------------------------------------------------------
-    */
-
-    public function invoice()
+    public function invoice(): BelongsTo
     {
-        return $this->belongsTo(\App\Models\PetShop\Invoice::class);
+        return $this->belongsTo(Invoice::class);
     }
-
-    /*
-    |--------------------------------------------------------------------------
-    | SCOPES
-    |--------------------------------------------------------------------------
-    */
-
-    /*
-    |--------------------------------------------------------------------------
-    | ACCESORS
-    |--------------------------------------------------------------------------
-    */
 
     public function getSubtotalAttribute()
     {
         return $this->quantity * $this->unit_price;
     }
-
-    /*
-    |--------------------------------------------------------------------------
-    | MUTATORS
-    |--------------------------------------------------------------------------
-    */
 }

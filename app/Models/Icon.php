@@ -2,66 +2,33 @@
 
 namespace App\Models;
 
+use App\Models\Recommend;
+use Backpack\ActivityLog\Traits\LogsActivity;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Venturecraft\Revisionable\RevisionableTrait;
 
 class Icon extends Model
 {
     use CrudTrait;
-    use \Backpack\ActivityLog\Traits\LogsActivity;
+    use LogsActivity;
     use RevisionableTrait;
 
-    /*
-    |--------------------------------------------------------------------------
-    | GLOBAL VARIABLES
-    |--------------------------------------------------------------------------
-    */
-
     protected $table = 'icons';
-    protected $primaryKey = 'id';
-    public $timestamps = true;
-    // protected $guarded = ['id'];
-    protected $fillable = ['name', 'icon'];
-    // protected $hidden = [];
+
+    protected $fillable = [
+        'name',
+        'icon',
+    ];
 
     public function identifiableAttribute()
     {
         return 'icon';
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | FUNCTIONS
-    |--------------------------------------------------------------------------
-    */
-
-    /*
-    |--------------------------------------------------------------------------
-    | RELATIONS
-    |--------------------------------------------------------------------------
-    */
-
-    public function recommends()
+    public function recommends(): MorphToMany
     {
-        return $this->morphToMany(\App\Models\Recommend::class, 'recommendable');
+        return $this->morphToMany(Recommend::class, 'recommendable');
     }
-
-    /*
-    |--------------------------------------------------------------------------
-    | SCOPES
-    |--------------------------------------------------------------------------
-    */
-
-    /*
-    |--------------------------------------------------------------------------
-    | ACCESORS
-    |--------------------------------------------------------------------------
-    */
-
-    /*
-    |--------------------------------------------------------------------------
-    | MUTATORS
-    |--------------------------------------------------------------------------
-    */
 }

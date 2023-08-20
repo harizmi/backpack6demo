@@ -3,42 +3,58 @@
 namespace App\Models;
 
 use App\Enums\MonsterStatus;
+use App\Models\Address;
+use App\Models\Ball;
+use App\Models\Bill;
+use App\Models\Cave;
+use App\Models\Country;
+use App\Models\Graffiti;
+use App\Models\Hero;
+use App\Models\Icon;
+use App\Models\PostalBox;
+use App\Models\PostalBoxer;
+use App\Models\Product;
+use App\Models\Recommend;
+use App\Models\Sentiment;
+use App\Models\Star;
+use App\Models\Story;
+use App\Models\Universe;
+use App\Models\Wish;
+use Backpack\ActivityLog\Traits\LogsActivity;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
+use Backpack\NewsCRUD\app\Models\Article;
+use Backpack\NewsCRUD\app\Models\Category;
+use Backpack\NewsCRUD\app\Models\Tag;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Support\Str;
 use Spatie\Permission\Traits\HasRoles;
 
 class Monster extends Model
 {
     use CrudTrait;
-    use \Backpack\ActivityLog\Traits\LogsActivity;
+    use LogsActivity;
     use HasRoles;
     use HasFactory;
 
-    /*
-    |--------------------------------------------------------------------------
-    | GLOBAL VARIABLES
-    |--------------------------------------------------------------------------
-    */
-
     protected $table = 'monsters';
 
-    protected $primaryKey = 'id';
-
-    public $timestamps = true;
-
-    // protected $guarded = ['id'];
     protected $fillable = ['address_google', 'base64_image', 'browse', 'browse_multiple', 'checkbox', 'wysiwyg', 'color', 'date', 'date_picker', 'easymde', 'start_date', 'end_date', 'datetime', 'datetime_picker', 'email', 'hidden', 'icon_picker', 'image', 'month', 'number', 'float', 'password', 'radio', 'range', 'select', 'select_from_array', 'select2', 'select2_from_ajax', 'select2_from_array', 'summernote', 'table', 'textarea', 'text', 'tinymce', 'upload', 'upload_multiple', 'url', 'video', 'week', 'extras', 'icon_id', 'editable_checkbox', 'fake-text', 'fake-switch', 'fake-checkbox', 'fake-select', 'status', 'features', 'ckeditor', 'dropzone'];
 
-    // protected $hidden = [];
     protected $casts = [
-        'address_google'        => 'object',
-        'video'                 => 'array',
-        'upload_multiple'       => 'array',
-        'browse_multiple'       => 'array',
-        'status'                => MonsterStatus::class,
-        'features'              => 'array',
+        'address_google' => 'object',
+        'video' => 'array',
+        'upload_multiple' => 'array',
+        'browse_multiple' => 'array',
+        'status' => MonsterStatus::class,
+        'features' => 'array',
         // optional casts for select from array fields that allow multiple selection
         // 'select_from_array'     => 'array',
         // 'select2_from_array'    => 'array'
@@ -46,13 +62,7 @@ class Monster extends Model
 
     public $identifiableAttribute = 'text';
 
-    /*
-    |--------------------------------------------------------------------------
-    | FUNCTIONS
-    |--------------------------------------------------------------------------
-    */
-
-    public function openGoogle($crud = false)
+    public function openGoogle($crud = false): string
     {
         return '<a class="btn btn-sm btn-link" target="_blank" href="http://google.com?q='.urlencode($this->text).'" data-toggle="tooltip" title="Just a demo custom button."><i class="la la-search"></i> Google it</a>';
     }
@@ -62,148 +72,130 @@ class Monster extends Model
         return $this->category;
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | RELATIONS
-    |--------------------------------------------------------------------------
-    */
-
-    public function article()
+    public function article(): BelongsTo
     {
-        return $this->belongsTo(\Backpack\NewsCRUD\app\Models\Article::class, 'select2_from_ajax');
+        return $this->belongsTo(Article::class, 'select2_from_ajax');
     }
 
-    public function wish()
+    public function wish(): HasOne
     {
-        return $this->hasOne(\App\Models\Wish::class);
+        return $this->hasOne(Wish::class);
     }
 
-    public function address()
+    public function address(): HasOne
     {
-        return $this->hasOne(\App\Models\Address::class);
+        return $this->hasOne(Address::class);
     }
 
-    public function cave()
+    public function cave(): BelongsTo
     {
-        return $this->belongsTo(\App\Models\Cave::class, 'cave_id');
+        return $this->belongsTo(Cave::class, 'cave_id');
     }
 
-    public function hero()
+    public function hero(): BelongsTo
     {
-        return $this->belongsTo(\App\Models\Hero::class, 'hero_id');
+        return $this->belongsTo(Hero::class, 'hero_id');
     }
 
-    public function story()
+    public function story(): BelongsTo
     {
-        return $this->belongsTo(\App\Models\Story::class, 'story_id');
+        return $this->belongsTo(Story::class, 'story_id');
     }
 
-    public function graffiti()
+    public function graffiti(): BelongsTo
     {
-        return $this->belongsTo(\App\Models\Graffiti::class, 'graffiti_id');
+        return $this->belongsTo(Graffiti::class, 'graffiti_id');
     }
 
-    public function category()
+    public function category(): BelongsTo
     {
-        return $this->belongsTo(\Backpack\NewsCRUD\app\Models\Category::class, 'select');
+        return $this->belongsTo(Category::class, 'select');
     }
 
-    public function categorySelect2()
+    public function categorySelect2(): BelongsTo
     {
-        return $this->belongsTo(\Backpack\NewsCRUD\app\Models\Category::class, 'select2');
+        return $this->belongsTo(Category::class, 'select2');
     }
 
-    public function icon()
+    public function icon(): BelongsTo
     {
-        return $this->belongsTo(\App\Models\Icon::class, 'icon_id');
+        return $this->belongsTo(Icon::class, 'icon_id');
     }
 
-    public function icondummy()
+    public function icondummy(): BelongsTo
     {
-        return $this->belongsTo(\App\Models\Icon::class, 'belongs_to_non_nullable');
+        return $this->belongsTo(Icon::class, 'belongs_to_non_nullable');
     }
 
-    public function postalboxes()
+    public function postalboxes(): HasMany
     {
-        return $this->hasMany(\App\Models\PostalBox::class);
+        return $this->hasMany(PostalBox::class);
     }
 
-    public function postalboxer()
+    public function postalboxer(): HasMany
     {
-        return $this->hasMany(\App\Models\PostalBoxer::class);
+        return $this->hasMany(PostalBoxer::class);
     }
 
-    public function articles()
+    public function articles(): BelongsToMany
     {
-        return $this->belongsToMany(\Backpack\NewsCRUD\app\Models\Article::class, 'monster_article');
+        return $this->belongsToMany(Article::class, 'monster_article');
     }
 
-    public function categories()
+    public function categories(): BelongsToMany
     {
-        return $this->belongsToMany(\Backpack\NewsCRUD\app\Models\Category::class, 'monster_category');
+        return $this->belongsToMany(Category::class, 'monster_category');
     }
 
-    public function tags()
+    public function tags(): BelongsToMany
     {
-        return $this->belongsToMany(\Backpack\NewsCRUD\app\Models\Tag::class, 'monster_tag');
+        return $this->belongsToMany(Tag::class, 'monster_tag');
     }
 
-    public function products()
+    public function products(): BelongsToMany
     {
-        return $this->belongsToMany(\App\Models\Product::class, 'monster_product');
+        return $this->belongsToMany(Product::class, 'monster_product');
     }
 
-    public function dummyproducts()
+    public function dummyproducts(): BelongsToMany
     {
-        return $this->belongsToMany(\App\Models\Product::class, 'monster_productdummy')->withPivot('notes');
+        return $this->belongsToMany(Product::class, 'monster_productdummy')->withPivot('notes');
     }
 
-    public function countries()
+    public function countries(): BelongsToMany
     {
-        return $this->belongsToMany(\App\Models\Country::class, 'countries_monsters');
+        return $this->belongsToMany(Country::class, 'countries_monsters');
     }
 
-    public function sentiment()
+    public function sentiment(): MorphOne
     {
-        return $this->morphOne(\App\Models\Sentiment::class, 'sentimentable');
+        return $this->morphOne(Sentiment::class, 'sentimentable');
     }
 
-    public function ball()
+    public function ball(): MorphOne
     {
-        return $this->morphOne(\App\Models\Ball::class, 'ballable');
+        return $this->morphOne(Ball::class, 'ballable');
     }
 
-    public function recommends()
+    public function recommends(): MorphToMany
     {
-        return $this->morphToMany(\App\Models\Recommend::class, 'recommendable')->withPivot('text');
+        return $this->morphToMany(Recommend::class, 'recommendable')->withPivot('text');
     }
 
-    public function bills()
+    public function bills(): MorphToMany
     {
-        return $this->morphToMany(\App\Models\Bill::class, 'billable');
+        return $this->morphToMany(Bill::class, 'billable');
     }
 
-    public function stars()
+    public function stars(): MorphMany
     {
-        return $this->morphMany(\App\Models\Star::class, 'starable');
+        return $this->morphMany(Star::class, 'starable');
     }
 
-    public function universes()
+    public function universes(): MorphMany
     {
-        return $this->morphMany(\App\Models\Universe::class, 'universable');
+        return $this->morphMany(Universe::class, 'universable');
     }
-
-    /*
-    |--------------------------------------------------------------------------
-    | SCOPES
-    |--------------------------------------------------------------------------
-    */
-
-    /*
-    |--------------------------------------------------------------------------
-    | ACCESORS
-    |--------------------------------------------------------------------------
-    */
 
     public function getTextAndEmailAttribute()
     {
@@ -229,12 +221,6 @@ class Monster extends Model
     {
         return clean($value);
     }
-
-    /*
-    |--------------------------------------------------------------------------
-    | MUTATORS
-    |--------------------------------------------------------------------------
-    */
 
     public function setBase64ImageAttribute($value)
     {

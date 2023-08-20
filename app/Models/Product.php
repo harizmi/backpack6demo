@@ -3,45 +3,56 @@
 namespace App\Models;
 
 use App\Enums\ProductStatus;
+use Backpack\ActivityLog\Traits\LogsActivity;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Backpack\CRUD\app\Models\Traits\SpatieTranslatable\HasTranslations;
+use Backpack\NewsCRUD\app\Models\Category;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
 class Product extends Model implements HasMedia
 {
     use CrudTrait;
-    use \Backpack\ActivityLog\Traits\LogsActivity;
+    use LogsActivity;
     use HasTranslations;
     use HasFactory;
     use InteractsWithMedia;
 
-    /*
-    |--------------------------------------------------------------------------
-    | GLOBAL VARIABLES
-    |--------------------------------------------------------------------------
-    */
-
     protected $table = 'products';
 
-    protected $primaryKey = 'id';
+    protected $fillable = [
+        'name',
+        'description',
+        'details',
+        'features',
+        'price',
+        'category_id',
+        'extras',
+        'status',
+        'condition',
+        'gallery',
+        'main_image',
+        'privacy_policy',
+        'specifications',
+    ];
 
-    public $timestamps = true;
-
-    // protected $guarded = ['id'];
-    protected $fillable = ['name', 'description', 'details', 'features', 'price', 'category_id', 'extras', 'status', 'condition', 'gallery', 'main_image', 'privacy_policy', 'specifications'];
-
-    // protected $hidden = [];
-    public $translatable = ['name', 'description', 'details', 'features', 'extras'];
+    public $translatable = [
+        'name',
+        'description',
+        'details',
+        'features',
+        'extras',
+    ];
 
     public $casts = [
-        'features'       => 'object',
+        'features' => 'object',
         'extra_features' => 'object',
-        'status'         => ProductStatus::class,
-        'gallery'        => 'json',
+        'status' => ProductStatus::class,
+        'gallery' => 'json',
         'specifications' => 'array',
     ];
 
@@ -101,38 +112,9 @@ class Product extends Model implements HasMedia
             },
         );
     }
-    /*
-    |--------------------------------------------------------------------------
-    | FUNCTIONS
-    |--------------------------------------------------------------------------
-    */
 
-    /*
-    |--------------------------------------------------------------------------
-    | RELATIONS
-    |--------------------------------------------------------------------------
-    */
-
-    public function category()
+    public function category(): BelongsTo
     {
-        return $this->belongsTo('Backpack\NewsCRUD\app\Models\Category', 'category_id');
+        return $this->belongsTo(Category::class, 'category_id');
     }
-
-    /*
-    |--------------------------------------------------------------------------
-    | SCOPES
-    |--------------------------------------------------------------------------
-    */
-
-    /*
-    |--------------------------------------------------------------------------
-    | ACCESORS
-    |--------------------------------------------------------------------------
-    */
-
-    /*
-    |--------------------------------------------------------------------------
-    | MUTATORS
-    |--------------------------------------------------------------------------
-    */
 }

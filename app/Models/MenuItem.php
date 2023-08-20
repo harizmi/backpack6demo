@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use Backpack\ActivityLog\Traits\LogsActivity;
 use Backpack\MenuCRUD\app\Models\MenuItem as OriginalMenuItem;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class MenuItem extends OriginalMenuItem
 {
     use HasFactory;
-    use \Backpack\ActivityLog\Traits\LogsActivity;
+    use LogsActivity;
 
     public static $pageLink = 'page_link';
     public static $externalLink = 'external_link';

@@ -2,13 +2,18 @@
 
 namespace App\Models\PetShop;
 
+use App\Models\PetShop\Owner;
+use App\Models\PetShop\Pet;
+use Backpack\ActivityLog\Traits\LogsActivity;
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class Badge extends Model
 {
-    use \Backpack\CRUD\app\Models\Traits\CrudTrait;
-    use \Backpack\ActivityLog\Traits\LogsActivity;
+    use CrudTrait;
+    use LogsActivity;
     use HasFactory;
 
     /**
@@ -29,13 +34,13 @@ class Badge extends Model
         'id' => 'integer',
     ];
 
-    public function owners()
+    public function owners(): MorphToMany
     {
-        return $this->morphedByMany(\App\Models\PetShop\Owner::class, 'badgeable');
+        return $this->morphedByMany(Owner::class, 'badgeable');
     }
 
-    public function pets()
+    public function pets(): MorphToMany
     {
-        return $this->morphedByMany(\App\Models\PetShop\Pet::class, 'badgeable');
+        return $this->morphedByMany(Pet::class, 'badgeable');
     }
 }

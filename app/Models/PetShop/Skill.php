@@ -2,13 +2,17 @@
 
 namespace App\Models\PetShop;
 
+use App\Models\PetShop\Pet;
+use Backpack\ActivityLog\Traits\LogsActivity;
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Skill extends Model
 {
-    use \Backpack\CRUD\app\Models\Traits\CrudTrait;
-    use \Backpack\ActivityLog\Traits\LogsActivity;
+    use CrudTrait;
+    use LogsActivity;
     use HasFactory;
 
     /**
@@ -29,8 +33,8 @@ class Skill extends Model
         'id' => 'integer',
     ];
 
-    public function pets()
+    public function pets(): BelongsToMany
     {
-        return $this->belongsToMany(\App\Models\PetShop\Pet::class);
+        return $this->belongsToMany(Pet::class);
     }
 }

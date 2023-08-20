@@ -2,13 +2,16 @@
 
 namespace App\Models\PetShop;
 
+use Backpack\ActivityLog\Traits\LogsActivity;
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class Avatar extends Model
 {
-    use \Backpack\CRUD\app\Models\Traits\CrudTrait;
-    use \Backpack\ActivityLog\Traits\LogsActivity;
+    use CrudTrait;
+    use LogsActivity;
     use HasFactory;
 
     /**
@@ -31,7 +34,7 @@ class Avatar extends Model
         'id' => 'integer',
     ];
 
-    public function avatarable()
+    public function avatarable(): MorphTo
     {
         return $this->morphTo();
     }

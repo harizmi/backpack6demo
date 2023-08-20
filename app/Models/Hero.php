@@ -2,13 +2,19 @@
 
 namespace App\Models;
 
+use App\Models\Monster;
+use App\Models\Story;
+use Backpack\ActivityLog\Traits\LogsActivity;
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Hero extends Model
 {
-    use \Backpack\CRUD\app\Models\Traits\CrudTrait;
-    use \Backpack\ActivityLog\Traits\LogsActivity;
+    use CrudTrait;
+    use LogsActivity;
     use HasFactory;
 
     /**
@@ -30,14 +36,14 @@ class Hero extends Model
         'id' => 'integer',
     ];
 
-    public function monster()
+    public function monster(): HasOne
     {
-        return $this->hasOne(\App\Models\Monster::class);
+        return $this->hasOne(Monster::class);
     }
 
-    public function stories()
+    public function stories(): BelongsToMany
     {
-        return $this->belongsToMany(\App\Models\Story::class, 'monsters')
-                    ->withPivot((new \App\Models\Monster())->getFillable());
+        return $this->belongsToMany(Story::class, 'monsters')
+            ->withPivot((new Monster())->getFillable());
     }
 }

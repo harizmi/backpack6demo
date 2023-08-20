@@ -2,65 +2,33 @@
 
 namespace App\Models;
 
+use App\Models\Icon;
+use App\Models\Monster;
+use Backpack\ActivityLog\Traits\LogsActivity;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class Recommend extends Model
 {
     use CrudTrait;
-    use \Backpack\ActivityLog\Traits\LogsActivity;
+    use LogsActivity;
     use HasFactory;
 
-    /*
-    |--------------------------------------------------------------------------
-    | GLOBAL VARIABLES
-    |--------------------------------------------------------------------------
-    */
-
     protected $table = 'recommends';
-    protected $primaryKey = 'id';
-    public $timestamps = true;
-    protected $fillable = ['title'];
-    // protected $hidden = [];
 
-    /*
-    |--------------------------------------------------------------------------
-    | FUNCTIONS
-    |--------------------------------------------------------------------------
-    */
+    protected $fillable = [
+        'title',
+    ];
 
-    /*
-    |--------------------------------------------------------------------------
-    | RELATIONS
-    |--------------------------------------------------------------------------
-    */
-
-    public function monsters()
+    public function monsters(): MorphToMany
     {
-        return $this->morphedByMany(\App\Models\Monster::class, 'recommendable');
+        return $this->morphedByMany(Monster::class, 'recommendable');
     }
 
-    public function icons()
+    public function icons(): MorphToMany
     {
-        return $this->morphedByMany(\App\Models\Icon::class, 'recommendable');
+        return $this->morphedByMany(Icon::class, 'recommendable');
     }
-
-    /*
-    |--------------------------------------------------------------------------
-    | SCOPES
-    |--------------------------------------------------------------------------
-    */
-
-    /*
-    |--------------------------------------------------------------------------
-    | ACCESORS
-    |--------------------------------------------------------------------------
-    */
-
-    /*
-    |--------------------------------------------------------------------------
-    | MUTATORS
-    |--------------------------------------------------------------------------
-    */
 }
